@@ -1,45 +1,88 @@
-// write a java code for 16 bit crc divsion error checking
-
-import java.util.*;
 import java.util.Scanner;
 
-public class crc1{
-     public static void main(String[] args){
-                Scanner in=new Scanner(System.in);
-                System..out.println("Enter the data word(in binary)");
-               String data=in.next();
-               System.out.println("Enter the key word(in binary)");
-               String key=in.next();
-               System.out.println("data is received at the sender side");
-                Encode(data,key);
-               System.out.println("At the receiver side");
-               System.out.println("Enter the code word received at receiver side");
-               String re=in.next();
-              int  i=data.length()+key.length()-1;
+public class CRC1 {
 
-             if(re.length()>i || re.length()<i){
-                     System.out.println("Enter a valid recieved word"); 
-                 }
-              else{
-                  Received(re,key);
-               }
-      
-   }
+    public static void main(String args[]) {
 
-private static void Encode(String data,String key)
-{
-      int len=key.length();
-     String str= new String(new char[len-1]);
-     Sting append=(data+str.replace("\0","0");
-     String remainder=Mod2Division(append,key);
-     String codeword=data+remainder;
-     System.out.println("Remainder:"+remainder);
-      System.out.println("CodeWord after encoding :"+codeword);
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("At Sender Side: ");
+        // Input Data Stream
+        System.out.print("Enter message bits: ");
+        String message = sc.nextLine();
+        System.out.print("Enter generator: ");
+        String generator = sc.nextLine();
+
+        int data[] = new int[message.length() + generator.length() - 1];
+        int divisor[] = new int[generator.length()];
+
+        for (int i = 0; i < message.length(); i++)
+            data[i] = Integer.parseInt(message.charAt(i) + "");
+
+        for (int i = 0; i < generator.length(); i++)
+            divisor[i] = Integer.parseInt(generator.charAt(i) + "");
+
+        // Calculation of CRC
+        for (int i = 0; i < message.length(); i++) {
+            if (data[i] == 1)
+                for (int j = 0; j < divisor.length; j++)
+                    data[i + j] ^= divisor[j];
+        }
+
+        // Display CRC
+        System.out.print("The checksum code is: ");
+        for (int i = 0; i < message.length(); i++)
+            System.out.print(data[i]);
+        System.out.println();
+
+        System.out.println("At Receiver Side: ");
+        // Check for input CRC code
+        System.out.print("Enter checksum code: ");
+        message = sc.nextLine();
+        System.out.print("Enter generator: ");
+        generator = sc.nextLine();
+
+        data = new int[message.length() + generator.length() - 1];
+        divisor = new int[generator.length()];
+
+        for (int i = 0; i < message.length(); i++)
+            data[i] = Integer.parseInt(message.charAt(i) + "");
+
+        for (int i = 0; i < generator.length(); i++)
+            divisor[i] = Integer.parseInt(generator.charAt(i) + "");
+
+        // Calculation of remainder
+        for (int i = 0; i < message.length(); i++) {
+            if (data[i] == 1)
+                for (int j = 0; j < divisor.length; j++)
+                    data[i + j] ^= divisor[j];
+        }
+
+        // Display validity of data
+        boolean valid = true;
+        for (int i = 0; i < data.length; i++)
+            if (data[i] == 1) {
+                valid = false;
+                break;
+            }
+
+        if (valid)
+            System.out.println("Data stream is valid");
+        else
+            System.out.println("Data stream is invalid. CRC error occurred.");
+    }
 }
 
-private static void Mod2Division(String dividend,String divisor){
 
-    int pick=divisor.length();
-   String temp=dividend.substring(0,pick);
-  int n=dividend.length();
-    while(pick
+/* the generator bit shoulb be same for both sender and receiver side to check the correctness of the code*/
+/*
+output:-
+At Sender Side: 
+Enter message bits: 11011101
+Enter generator: 01101
+The checksum code is: 10101001
+At Receiver Side: 
+Enter checksum code: 10101110
+Enter generator: 01101
+Data stream is invalid. CRC error occurred.
+*/
