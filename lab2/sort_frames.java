@@ -46,4 +46,17 @@ Enter data for 1th frame>>213
 Enter data for 2th frame>>211
 Enter data for 3th frame>>567
 Enter data for 4th frame>>290
+
+Before Sorting>>
+seqNum->385, Data->213
+seqNum->417, Data->211
+seqNum->265, Data->567
+seqNum->109, Data->290
+
+
+ After sorting>>
+seqNum->109, Data->290
+seqNum->265, Data->567
+seqNum->385, Data->213
+seqNum->417, Data->211
 */
