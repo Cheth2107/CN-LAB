@@ -53,16 +53,16 @@ public class BellmanFord {
 /*output:-
 Enter the number of Vertices : 5
 Enter the Weight Matrix of Graph
-0 6 0 7 0
-0 0 5 8 -4
+0 -1 4 0 0
+0 0 3 2 2
 0 0 0 0 0
-0 0 -3 0 9
-2 0 0 0 0
+0 1 5 0 0
+0 0 0 -3 0
 Enter the Source Vertex : 1
 Vertex   Distance from Source
 1               0
-2               6
-3               4
-4               7
-5               2
+2               -1
+3               2
+4               -2
+5               1
 */
