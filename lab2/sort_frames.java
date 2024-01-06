@@ -39,6 +39,26 @@ public class sort1 {
 }
 
 
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Collections;
+
+public class FrameSorter {
+    public static void main(String[] args) {
+        List<Integer> frames = Arrays.asList(5, 4, 2, 7, 8, 1, 6, 3);
+        sortFrames(frames);
+        System.out.println(frames);
+    }
+
+    public static void sortFrames(List<Integer> frames) {
+        // This code assumes the frames are sorted in descending order
+        // Collections.sort(frames, Collections.reverseOrder());
+
+        // However, you can modify the sorting order as per your requirements
+        Collections.sort(frames);
+    }
+}
 /* output:-
 Enter no. of frames:
 4
