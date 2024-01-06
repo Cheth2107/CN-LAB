@@ -46,17 +46,48 @@ import java.util.Collections;
 
 public class FrameSorter {
     public static void main(String[] args) {
-        List<Integer> frames = Arrays.asList(5, 4, 2, 7, 8, 1, 6, 3);
+        List<Frame> frames = Arrays.asList(
+            new Frame(385, 213),
+            new Frame(417, 211),
+            new Frame(265, 567),
+            new Frame(109, 290)
+        );
         sortFrames(frames);
-        System.out.println(frames);
+        System.out.println("Before Sorting>>");
+        for (Frame frame : frames) {
+            System.out.println(frame);
+        }
+        sortFrames(frames);
+        System.out.println("\nAfter sorting>>");
+        for (Frame frame : frames) {
+            System.out.println(frame);
+        }
     }
 
-    public static void sortFrames(List<Integer> frames) {
+    public static void sortFrames(List<Frame> frames) {
         // This code assumes the frames are sorted in descending order
-        // Collections.sort(frames, Collections.reverseOrder());
+        Collections.sort(frames, Collections.reverseOrder());
 
         // However, you can modify the sorting order as per your requirements
-        Collections.sort(frames);
+        // Collections.sort(frames);
+    }
+}
+
+class Frame implements Comparable<Frame> {
+    private int seqNum;
+    private int data;
+
+    public Frame(int seqNum, int data) {
+        this.seqNum = seqNum;
+        this.data = data;
+    }
+
+    public int compareTo(Frame other) {
+        return this.seqNum - other.seqNum;
+    }
+
+    public String toString() {
+        return "seqNum->" + seqNum + ", Data->" + data;
     }
 }
 /* output:-
