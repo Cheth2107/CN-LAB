@@ -6,26 +6,36 @@ import java.math.*;
 import java.nio.charset.*;
 import java.util.*;
 
-public class RSA{
+public class RSA {
     private BigInteger p, q, N, phi, e, d;
     private int bitLength = 1024;
     private Random r;
 
     public RSA() {
+        // Initializing random number generator
         r = new Random();
+        
+        // Generating two probable prime numbers p and q
         p = BigInteger.probablePrime(bitLength, r);
         q = BigInteger.probablePrime(bitLength, r);
         System.out.println("Prime number p is " + p);
         System.out.println("Prime number q is " + q);
+
+        // Calculating N (modulus) and phi (Euler's totient function)
         N = p.multiply(q);
         phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
+
+        // Generating public key e
         e = BigInteger.probablePrime(bitLength / 2, r);
 
+        // Ensuring that e is coprime with phi
         while (phi.gcd(e).compareTo(BigInteger.ONE) > 0 && e.compareTo(phi) < 0) {
             e = e.add(BigInteger.ONE);
         }
 
         System.out.println("Public key is " + e);
+
+        // Calculating private key d
         d = e.modInverse(phi);
         System.out.println("Private key is " + d);
     }
@@ -37,13 +47,19 @@ public class RSA{
         String testString = br.readLine();
         System.out.println("Encrypting string: " + testString);
         System.out.println("String in bytes: " + bytesToString(testString.getBytes()));
+        
+        // Encrypting the message
         byte[] encrypted = rsa.encrypt(testString.getBytes());
+        
+        // Decrypting the message
         byte[] decrypted = rsa.decrypt(encrypted);
+
         System.out.println("Decrypting Bytes: " + bytesToString(decrypted));
         System.out.println("Decrypted string: " + new String(decrypted, StandardCharsets.UTF_8));
     }
 
     private static String bytesToString(byte[] encrypted) {
+        // Converting byte array to string for display
         StringBuilder result = new StringBuilder();
         for (byte b : encrypted) {
             result.append(Byte.toString(b));
@@ -52,13 +68,16 @@ public class RSA{
     }
 
     public byte[] encrypt(byte[] message) {
+        // Encrypting the message using the public key (e, N)
         return (new BigInteger(message)).modPow(e, N).toByteArray();
     }
 
     public byte[] decrypt(byte[] message) {
+        // Decrypting the message using the private key (d, N)
         return (new BigInteger(message)).modPow(d, N).toByteArray();
     }
 }
+
 
 /*OUTPUT:-
 Prime number p is 135300281134717879746902808366541099903975251288789284334641807832207682871127271567920761055463729098924430287718421850746198499428795090338316070179909825871150136529664667741679224565002205330126017727809227066298450635996226617624131459287230966759830732923433622770966482580389693040579733621803440243969
