@@ -9,21 +9,23 @@ public class RedCongestionControl {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Enter the maximum number of packets:");//number of packets to be sent
+        // Getting input values from the user
+        System.out.println("Enter the maximum number of packets:");// number of packets to be sent
         int maxPackets = scanner.nextInt();
 
-        System.out.println("Enter the queue size:");//size of the queue the packets can be stored
+        System.out.println("Enter the queue size:");// size of the queue the packets can be stored
         int queueSize = scanner.nextInt();
 
         System.out.println("Enter the maximum probability:");
         double maxProbability = scanner.nextDouble();
 
-        System.out.println("Enter the minimum probability:");//used to calculated the drop probabilty (max-min)
+        System.out.println("Enter the minimum probability:");// used to calculate the drop probability (max-min)
         double minProbability = scanner.nextDouble();
 
-        System.out.println("Enter the threshold value:");//the value after which the congestion control comes to action 
+        System.out.println("Enter the threshold value:");// the value after which the congestion control comes to action
         int threshold = scanner.nextInt();
 
+        // Simulating congestion control
         simulateCongestion(maxPackets, queueSize, maxProbability, minProbability, threshold);
     }
 
@@ -32,11 +34,12 @@ public class RedCongestionControl {
         int queueLength = 0;
 
         for (int i = 0; i < maxPackets; i++) {
+            // Calculating drop probability based on the current queue length
             double dropProbability = calculateDropProbability(queueLength, queueSize, maxProbability, minProbability, threshold);
 
+            // Checking whether to drop or accept the packet based on drop probability
             if (queueLength >= threshold && rand.nextDouble() < dropProbability) {
                 System.out.println("Packet dropped (CONGESTION AVOIDANCE)");
-                //checking the threshold value and the probabilty to check whether to accept or reject the packet
             } else {
                 System.out.println("Packet accepted " + (i + 1));
                 queueLength++;
@@ -45,6 +48,7 @@ public class RedCongestionControl {
     }
 
     private static double calculateDropProbability(int currentQueueLength, int queueSize, double maxProbability, double minProbability, int threshold) {
+        // Calculating drop probability using a linear function
         double slope = (maxProbability - minProbability) / (queueSize - threshold);
         return minProbability + slope * (currentQueueLength - threshold);
     }
