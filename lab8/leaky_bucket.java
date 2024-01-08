@@ -10,13 +10,18 @@ public class Main {
     public static void main(String args[]) {
         Scanner in = new Scanner(System.in);
         int bucket_remaining = 0, sent, received;
+        
+        // Getting input values from the user
         System.out.println("Enter the bucket capacity");
         int bucket_capacity = in.nextInt();
         System.out.println("Enter the bucket rate (Rate at which the bucket sends the packets)");
         int bucket_rate = in.nextInt();
         System.out.println("Enter the number of packets to be sent");
         int n = in.nextInt();
-        int[] buf = new int[30]; // buffer array to store the packets
+        
+        // Buffer array to store the packets
+        int[] buf = new int[30];
+        
         System.out.println("Enter the packets sizes one by one");
         for (int i = 0; i < n; i++) {
             buf[i] = in.nextInt();
@@ -26,8 +31,9 @@ public class Main {
 
         for (int i = 0; i < n; i++) {
             if (buf[i] != 0) {
+                // Check if the bucket can accept the incoming packet
                 if (bucket_remaining + buf[i] > bucket_capacity) {
-                    received = -1;
+                    received = -1; // Packet dropped
                 } else {
                     received = buf[i];
                     bucket_remaining += buf[i];
@@ -36,6 +42,7 @@ public class Main {
                 received = 0;
             }
 
+            // Check if there are packets in the bucket to be sent
             if (bucket_remaining != 0) {
                 if (bucket_remaining < bucket_rate) {
                     sent = bucket_remaining;
@@ -48,6 +55,7 @@ public class Main {
                 sent = 0;
             }
 
+            // Print the simulation results for each time step
             if (received == -1) {
                 System.out.println(String.format("%d\t%d\t%s\t%d\t%d", i + 1, buf[i], "dropped", sent, bucket_remaining));
             } else {
